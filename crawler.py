@@ -4,8 +4,9 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import SessionNotCreatedException, NoSuchElementException
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.common.action_chains import ActionChains
 import pandas as pd
-import openpyxl
 import time
 import shutil
 import os
@@ -17,7 +18,8 @@ save_path = f"./content_{target_date}.xlsx"
 # 中文版
 # target_url = "https://aws.amazon.com/tw/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
 # 英文版
-target_url = "https://aws.amazon.com/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
+target_url = "https://aws.amazon.com/new/?nc1=h_ls&whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
+
 
 # -------------------------------------------------------- Chrome Setting --------------------------------------------------------
 # 設置 Chrome 瀏覽器選項
@@ -34,28 +36,67 @@ try:
 except SessionNotCreatedException as e:
     print("請確保您的 ChromeDriver 版本與 Chrome 瀏覽器匹配，您可以訪問 https://chromedriver.chromium.org/downloads 下載正確版本。")
     raise e
-# -------------------------------------------------------- Chrome Setting --------------------------------------------------------
+# -------------------------------------------------------- driver setting --------------------------------------------------------
+
+headers = {
+    ':authority': 'us-east-1.prod.pr.analytics.console.aws.a2z.com',
+    ':method': 'POST',
+    ':path': '/panoramaroute',
+    ':scheme': 'https',
+    'accept': '*/*',
+    'accept-encoding': 'gzip, deflate, br, zstd',
+    'accept-language': 'en-US;q=0.9,zh-TW,zh;q=0.8,en;q=0.7',
+    'content-length': '3417',
+    'content-type': 'application/json; charset=UTF-8',
+    'origin': 'https://aws.amazon.com',
+    'panorama-appentity': 'aws-marketing',
+    'priority': 'u=1, i',
+    'referer': 'https://aws.amazon.com/',
+    'sec-ch-ua': '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'empty',
+    'sec-fetch-mode': 'cors',
+    'sec-fetch-site': 'cross-site',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36'
+}
+
+# 使用 Chrome DevTools 協議來設置標頭
+options = webdriver.ChromeOptions()
+options.add_experimental_option("prefs", {"intl.accept_languages": "en,en_US"})
+
+for key, value in headers.items():
+    options.add_argument(f'--header={key}:{value}')
+
+# 啟動 driver 並套用標頭
+driver = webdriver.Chrome(options=options)
+
 # 打開主頁面
 driver.get(target_url)
-time.sleep(3)
+time.sleep(5)
+# 點擊螢幕右下角
+window_width = driver.execute_script("return window.innerWidth")
+window_height = driver.execute_script("return window.innerHeight")
+right_bottom_x = window_width - 10
+right_bottom_y = window_height - 10
 
-data = []
+# 模擬點擊右下角
+ActionChains(driver).move_by_offset(right_bottom_x, right_bottom_y).click().perform()
+print ("點擊完成")
 
-# 定義下一頁的標籤
-next_page_selector = "a[aria-label='下一頁']"
-
+# -------------------------------------------------------- crawler --------------------------------------------------------
 # 爬取當前頁面並循環至符合日期的所有頁面
 while True:
     # 查找所有符合的<li>標籤，這些標籤包含文章資訊
+    data = []
     divs = driver.find_elements(By.CLASS_NAME, 'm-card.m-list-card')
-
+    next_page_selector = "a[aria-label='下一頁']"
     # 從每個<li>中提取標題、日期和鏈接
     for div in divs:
         try:
             title = div.find_element(By.CLASS_NAME, 'm-card-title').find_element(By.TAG_NAME, 'b').text.strip()
         except NoSuchElementException:
             title = 'N/A'
-        
         try:
             date = div.find_element(By.CLASS_NAME, 'm-card-info').text.strip()
             date_obj = datetime.strptime(date, "%Y年%m月%d日")
@@ -63,6 +104,7 @@ while True:
             if date_obj < target_date_obj:
                 # 如果文章日期小於目標日期，停止爬取
                 driver.quit()
+                print ("文章日期小於目標日期")
                 # 使用 pandas 將資料轉換為 DataFrame
                 df = pd.DataFrame(data)
                 # 增加一個空欄位 "context"
@@ -90,6 +132,7 @@ while True:
 
         # 將資料添加到列表
         data.append({'Title': title, 'Date': date, 'URL': full_link})
+
 
     # 查找下一頁按鈕
     try:
