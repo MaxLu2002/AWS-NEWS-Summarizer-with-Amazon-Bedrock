@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import SessionNotCreatedException, NoSuchElementException
@@ -11,20 +10,23 @@ import time
 import shutil
 import os
 from datetime import datetime
+import var
 
-save_path = "./content.xlsx"
-target_date = "2024/11/21"
-main_url = "https://aws.amazon.com/tw/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
+target_date = var.target_date
+save_path = f"./content_{target_date}.xlsx"
+# 中文版
+# target_url = "https://aws.amazon.com/tw/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
+# 英文版
+target_url = "https://aws.amazon.com/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
 
+# -------------------------------------------------------- Chrome Setting --------------------------------------------------------
 # 設置 Chrome 瀏覽器選項
 chrome_options = Options()
 chrome_options.add_argument("--no-sandbox")
 chrome_options.add_argument("--disable-dev-shm-usage")
-
 # 檢查 ChromeDriver 版本是否與 Chrome 匹配
 chrome_version = shutil.which('chrome')
 chromedriver_version = shutil.which('chromedriver')
-
 # 初始化 WebDriver
 service = Service("C:/下載程式/chromedriver-win64/chromedriver.exe")  # 確保 chromedriver 在 PATH 中
 try:
@@ -32,14 +34,11 @@ try:
 except SessionNotCreatedException as e:
     print("請確保您的 ChromeDriver 版本與 Chrome 瀏覽器匹配，您可以訪問 https://chromedriver.chromium.org/downloads 下載正確版本。")
     raise e
-
+# -------------------------------------------------------- Chrome Setting --------------------------------------------------------
 # 打開主頁面
-driver.get(main_url)
+driver.get(target_url)
+time.sleep(3)
 
-# 等待 5 秒以確保頁面完全加載
-time.sleep(5)
-
-# 存儲結果的列表
 data = []
 
 # 定義下一頁的標籤
@@ -60,7 +59,7 @@ while True:
         try:
             date = div.find_element(By.CLASS_NAME, 'm-card-info').text.strip()
             date_obj = datetime.strptime(date, "%Y年%m月%d日")
-            target_date_obj = datetime.strptime(target_date, "%Y/%m/%d")
+            target_date_obj = datetime.strptime(target_date, "%Y%m%d")
             if date_obj < target_date_obj:
                 # 如果文章日期小於目標日期，停止爬取
                 driver.quit()
