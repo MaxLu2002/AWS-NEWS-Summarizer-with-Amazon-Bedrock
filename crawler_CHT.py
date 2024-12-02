@@ -12,12 +12,11 @@ import os
 from datetime import datetime
 import var
 
-target_date = var.target_date
-save_path = f"./content_{target_date}.xlsx"
+target_date = var.CHT_target_date
+
+save_path = f"./articles/CHT_content_{target_date}.xlsx"
 # 中文版
-# target_url = "https://aws.amazon.com/tw/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
-# 英文版
-target_url = "https://aws.amazon.com/new/?nc1=h_ls&whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
+target_url = "https://aws.amazon.com/tw/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all"
 
 
 # -------------------------------------------------------- Chrome Setting --------------------------------------------------------
@@ -68,7 +67,7 @@ driver = webdriver.Chrome(service=service, options=chrome_options)
 
 # 打開主頁面
 driver.get(target_url)
-time.sleep(10)
+time.sleep(3)
 # 點擊螢幕右下角
 window_width = driver.execute_script("return window.innerWidth")
 window_height = driver.execute_script("return window.innerHeight")
