@@ -1,2 +1,2 @@
-
-AWS news: https://aws.amazon.com/tw/new/?whats-new-content-all.sort-by=item.additionalFields.postDateTime&whats-new-content-all.sort-order=desc&awsf.whats-new-categories=*all
+有些標題爬不到？
+命名規則？

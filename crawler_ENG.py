@@ -8,9 +8,9 @@ from selenium.webdriver.common.action_chains import ActionChains
 import pandas as pd
 import time
 import shutil
-import os
 from datetime import datetime
 import var
+
 
 target_date = var.ENG_target_date
 
@@ -101,7 +101,7 @@ while True:
                 # 使用 pandas 將資料轉換為 DataFrame
                 df = pd.DataFrame(data)
                 # 增加一個空欄位 "context"
-                df['Context'] = ""
+                df['Content'] = ""
                 print(df.head())
                 # 將 DataFrame 儲存到 Excel，增加錯誤處理
                 try:
@@ -134,21 +134,21 @@ while True:
         time.sleep(5)
     except NoSuchElementException:
         print ("找不到下一頁")
+    # 關閉 WebDriver
+    driver.quit()
 
-# 關閉 WebDriver
-driver.quit()
+    # 使用 pandas 將資料轉換為 DataFrame
+    df = pd.DataFrame(data)
+    # 增加一個空欄位 "content"
+    df['Content'] = ""
+    # 將 DataFrame 儲存到 Excel，增加錯誤處理
+    try:
+        df.to_excel(save_path, index=False)
+        print("資料已成功儲存到", save_path)
+    except PermissionError:
+        print("無法儲存資料到", save_path, "。請確認檔案未被其他程序佔用並且有寫入權限。")
+    except FileNotFoundError:
+        print("無法找到儲存路徑", save_path, "。請確認路徑是否正確。")
+    except Exception as e:
+        print("儲存資料到 Excel 時發生未知錯誤：", str(e))
 
-# 使用 pandas 將資料轉換為 DataFrame
-df = pd.DataFrame(data)
-# 增加一個空欄位 "context"
-df['Context'] = ""
-# 將 DataFrame 儲存到 Excel，增加錯誤處理
-try:
-    df.to_excel(save_path, index=False)
-    print("資料已成功儲存到", save_path)
-except PermissionError:
-    print("無法儲存資料到", save_path, "。請確認檔案未被其他程序佔用並且有寫入權限。")
-except FileNotFoundError:
-    print("無法找到儲存路徑", save_path, "。請確認路徑是否正確。")
-except Exception as e:
-    print("儲存資料到 Excel 時發生未知錯誤：", str(e))
