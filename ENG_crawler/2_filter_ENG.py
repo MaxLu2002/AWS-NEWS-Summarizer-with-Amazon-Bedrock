@@ -49,7 +49,7 @@ def scrape_content(links):
         contents.append(content)
         titles.append(title)
         dates.append(date)
-        print(f"{link}爬取完成")
+        print(f"{link} Cleaned ")
 
     return contents, titles, dates
 
@@ -62,22 +62,20 @@ def save_to_excel(df, target_file, contents, titles, dates,target_date):
         target_date = datetime.strptime(target_date, "%Y%m%d").date()
         rows_to_drop = []
         for index, row in df.iterrows():
-            # 將每列的日期轉換為 date 物件
             row_date = datetime.strptime(row['Date'], "%Y/%m/%d").date()
             
             if row_date < target_date:
                 rows_to_drop.append(index)
         
-        # 刪除早於目標日期的列
         df_filtered = df.drop(rows_to_drop)
         df_filtered.to_excel(target_file, index=False)
-        print(f"資料已成功儲存到 {target_file}")
-        print(f"篩選後的資料筆數：{len(df_filtered)}")
+        print(f"Data Saved to {target_file}")
+        print(f"Data Rows：{len(df_filtered)}")
         
     except ValueError as e:
-        print(f"日期轉換錯誤：{e}")
+        print(f"Date Error：{e}")
     except Exception as e:
-        print(f"儲存檔案時發生錯誤：{e}")
+        print(f"Save Effor：{e}")
 
 def main():
     target_date = config.target_date

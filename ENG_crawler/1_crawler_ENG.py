@@ -9,17 +9,19 @@ from selenium.common.exceptions import SessionNotCreatedException, NoSuchElement
 from selenium.webdriver.common.action_chains import ActionChains
 import config
 
+Chrome_path = "C:/下載程式/chromedriver-win64/chromedriver.exe"
+
 def setup_driver():
     """Setup Chrome driver with required options."""
     chrome_options = Options()
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_experimental_option("prefs", {"intl.accept_languages": "en,en_US"})
-    service = Service("C:/下載程式/chromedriver-win64/chromedriver.exe")
+    service = Service(Chrome_path)
     try:
         driver = webdriver.Chrome(service=service, options=chrome_options)
     except SessionNotCreatedException as e:
-        print("請確保您的 ChromeDriver 版本與 Chrome 瀏覽器匹配，您可以訪問 https://chromedriver.chromium.org/downloads 下載正確版本。")
+        print("Please ensure your ChromeDriver version matches your Chrome browser. You can download the correct version from https://chromedriver.chromium.org/downloads.")
         raise e
     return driver
 
@@ -32,7 +34,7 @@ def open_target_page(driver, target_url):
     right_bottom_x = window_width - 10
     right_bottom_y = window_height - 10
     ActionChains(driver).move_by_offset(right_bottom_x, right_bottom_y).click().perform()
-    print("點擊完成")
+    print("Click completed")
 
 def scrape_data(driver, target_date):
     """Scrape articles data from the webpage."""
@@ -51,7 +53,7 @@ def scrape_data(driver, target_date):
                 date = div.find_element(By.CLASS_NAME, 'm-card-info').text.strip()
                 date_obj = datetime.strptime(date, "%m/%d/%Y")
                 if date_obj < target_date_obj:
-                    print("文章日期小於目標日期")
+                    print("Article date is earlier than the target date")
                     return data
             except (NoSuchElementException, ValueError):
                 date = 'N/A'
@@ -69,7 +71,7 @@ def scrape_data(driver, target_date):
             next_page.click()
             time.sleep(5)
         except NoSuchElementException:
-            print("找不到下一頁")
+            print("Next page not found")
             break
 
     return data
@@ -80,14 +82,14 @@ def save_to_excel(data, save_path):
     df['Content'] = ""
     try:
         df.to_excel(save_path, index=False)
-        print("\n資料已成功儲存到", save_path)
-        print (df.head())
+        print("\nData successfully saved to", save_path)
+        print(df.head())
     except PermissionError:
-        print("無法儲存資料到", save_path, "，請確認檔案未被其他程序佔用並且有寫入權限。")
+        print("Unable to save data to", save_path, ". Please ensure the file is not in use by another program and you have write permissions.")
     except FileNotFoundError:
-        print("無法找到儲存路徑", save_path, "，請確認路徑是否正確。")
+        print("Save path not found:", save_path, ". Please check if the path is correct.")
     except Exception as e:
-        print("儲存資料到 Excel 時發生未知錯誤：", str(e))
+        print("An unknown error occurred while saving data to Excel:", str(e))
 
 def main():
     target_date = config.target_date
