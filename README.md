@@ -29,9 +29,9 @@
     ```
     **注意**：請確保 AWS 帳戶具備使用 Bedrock API 的權限。
 
-3. 設定環境變數：
+3. 設定環境變數(e.g. on PowerShell)：
     ```bash
-    export AWS_PROFILE=your_profile_name
+    export AWS_PROFILE=your_profile_name 
     ```
 
 4. 設定 ChromeDriver 的路徑：
@@ -44,8 +44,9 @@
 
 ### 1. 設定日期
 在 `config.py` 中修改目標日期 `target_date` (格式：YYYYMMDD)：
-```python
-target_date = "20241211"
+    ```python
+    target_date = "20241211"
+    '''
 
 ### 2. 爬取 AWS 網站文章
 
