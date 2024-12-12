@@ -1,5 +1,4 @@
 import time
-import shutil
 from datetime import datetime
 import pandas as pd
 from selenium import webdriver
@@ -15,6 +14,7 @@ def setup_driver():
     chrome_options = Options()
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
+    chrome_options.add_experimental_option("prefs", {"intl.accept_languages": "en,en_US"})
     service = Service("C:/下載程式/chromedriver-win64/chromedriver.exe")
     try:
         driver = webdriver.Chrome(service=service, options=chrome_options)

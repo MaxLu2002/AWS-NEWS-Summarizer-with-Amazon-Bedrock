@@ -4,16 +4,16 @@ import pandas as pd
 import time
 import config
 
+# 讀取指定文件
 target_date = config.target_date
-
 file_name = f"ENG_content_{target_date}"
-# 讀取Excel文件
 file_path = f"./articles/{file_name}.xlsx"
 
 # 初始化 Bedrock Runtime 客戶端
 bedrock_runtime = boto3.client("bedrock-runtime", region_name="us-east-1")
-# $env:AWS_PROFILE="intern"
-# aws s3 ls 
+# 執行以下設定環境變數
+    # $env:AWS_PROFILE="intern"
+    # aws s3 ls (檢查)
 
 
 # 定義機器人Prompt
@@ -35,6 +35,7 @@ prompt_template = """
     --解決的方式--
     1. 
     2. 
+    3.
 
 """
 
@@ -52,11 +53,11 @@ for index, row in df.iterrows():
         "accept": "application/json",
         "body": json.dumps({
             "anthropic_version": "bedrock-2023-05-31",
-            "max_tokens": 250,
-            "top_k": 350,
+            "max_tokens": 500,
             "stop_sequences": [],
             "temperature": 1,
             "top_p": 0.5,
+            "top_k": 100,
             "messages": [
                 {
                     "role": "user",
