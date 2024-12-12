@@ -4,13 +4,9 @@ from bs4 import BeautifulSoup
 import var
 from datetime import datetime
 
-# 英文檔案為目標
-target_date = var.ENG_target_date
-target_file = f'./articles/ENG_content_{target_date}.xlsx'
-
 # 中文檔案為目標
-# target_date = var.CHT_target_date
-# target_file = f'./articles/CHT_content_{target_date}.xlsx'
+target_date = var.CHT_target_date
+target_file = f'./articles/CHT_content_{target_date}.xlsx'
 
 # 讀取 Excel 檔案
 df = pd.read_excel(target_file)
