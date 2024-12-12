@@ -56,8 +56,6 @@ python 1_crawler_ENG.py
 
 此步驟將爬取文章並將資料儲存至 ./articles/ENG_content_<target_date>.xlsx。
 
----
-
 ### 3. 篩選與提取內容
 
 執行 2_filter_ENG.py：
@@ -66,8 +64,6 @@ python 2_filter_ENG.py
 
 此步驟會提取每篇文章的內容、標題和發佈日期，並篩選符合目標日期的文章。
 
----
-
 ### 4. 生成摘要
 
 執行 3_bedrock-SUM.py：
@@ -75,8 +71,6 @@ python 2_filter_ENG.py
 python 3_bedrock-SUM.py
 
 此步驟將利用 AWS Bedrock API 為篩選後的文章生成摘要，並更新至 Excel 檔案。
-
----
 
 ### 輸出結果
 
@@ -87,8 +81,6 @@ Date：文章日期
 URL：文章連結
 Content：文章全文
 Summarize：文章摘要
-
----
 
 ### 注意事項
 
