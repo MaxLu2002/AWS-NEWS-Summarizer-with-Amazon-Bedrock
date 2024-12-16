@@ -42,14 +42,8 @@ This project is an automated tool designed to scrape technical articles from the
 
 ## Usage Instructions
 
-### 1. Set the Target Date
-Modify the target date `target_date` in `config.py` (format: YYYYMMDD):
-    ```python
-    target_date = "20241211"
-    ```
+### 1. set the time variable in "config.py", this is the date that you will crawler. e.g. if equal to "1212", the crawler will scrape til 12 december 
 
-### 2. Scrape AWS Website Articles
+### 2. set the environment variable in terminal , you need to identity AWS bedrock access through aws configure e.g. $env:AWS_PROFILE="YOUR-PROFILE-NAME"
 
-Run `1_crawler_ENG.py`:
-```bash
-python 1_crawler_ENG.py
+### 3. apply main.py
