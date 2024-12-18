@@ -45,7 +45,7 @@ This project is an automated tool designed to scrape technical articles from the
 
 ### 1. Configure Variables
 Set the `time` and `language` variables in the `config.py` file. The `time` variable represents the target date for the web crawler, while the `language` variable specifies the language for the output. For example:
-- If `time` is set to `1212`, the crawler will scrape data up to December 12th.
+- If `time` is set to `20241212`, the crawler will scrape data until December 12th.
 - If `language` is set to "Traditional Chinese", the output will be in Traditional Chinese.
 
 ### 2. Set Environment Variables
