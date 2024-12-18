@@ -16,7 +16,7 @@ def main():
     articles_dir = "./articles"
     ensure_directory(articles_dir)
 
-    # first step: Crawler
+    # 1st step: Crawler
     print("\n Data Crawlering...")
     crawler()
     time.sleep(3)
@@ -29,6 +29,8 @@ def main():
     # 3rd Srep: Summary
     print("\n Summarizing...")
     bedrock()
+    
+
 
 if __name__ == "__main__":
     main()
