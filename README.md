@@ -49,10 +49,11 @@ Set the `time` and `language` variables in the `config.py` file. The `time` vari
 - If `language` is set to "Traditional Chinese", the output will be in Traditional Chinese.
 
 ### 2. Set Environment Variables
-    ```bash
-    $env:AWS_PROFILE="intern"
-    ```
 Replace `YOUR-PROFILE-NAME` with the appropriate AWS profile name.
+
+    ```bash 
+        $env:AWS_PROFILE="intern"
+    ```
 
 ### 3. Run the Main Script    
     ```bash
