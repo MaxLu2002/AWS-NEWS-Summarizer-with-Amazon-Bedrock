@@ -3,5 +3,3 @@ beautifulsoup4
 pandas
 openpyxl
 selenium
-sentence-transformers 
-torch 

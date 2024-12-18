@@ -31,7 +31,7 @@ This project is an automated tool designed to scrape technical articles from the
 
 3. Set environment variables (e.g., on PowerShell):
     ```bash
-    export AWS_PROFILE=your_profile_name 
+    $env:AWS_PROFILE="intern"
     ```
 
 4. Configure the ChromeDriver path:
@@ -42,8 +42,26 @@ This project is an automated tool designed to scrape technical articles from the
 
 ## Usage Instructions
 
-### 1. set the time variable in "config.py", this is the date that you will crawler. e.g. if equal to "1212", the crawler will scrape til 12 december 
 
-### 2. set the environment variable in terminal , you need to identity AWS bedrock access through aws configure e.g. $env:AWS_PROFILE="YOUR-PROFILE-NAME"
+### 1. Configure Variables
+Set the `time` and `language` variables in the `config.py` file. The `time` variable represents the target date for the web crawler, while the `language` variable specifies the language for the output. For example:
+- If `time` is set to `1212`, the crawler will scrape data up to December 12th.
+- If `language` is set to "Traditional Chinese", the output will be in Traditional Chinese.
 
-### 3. apply main.py
+### 2. Set Environment Variables
+Configure the environment variable in your terminal to enable AWS Bedrock access. Use the AWS CLI to set your profile:
+
+$env:AWS_PROFILE="YOUR-PROFILE-NAME"
+
+Replace `YOUR-PROFILE-NAME` with the appropriate AWS profile name.
+
+### 3. Run the Main Script
+Execute the `main.py` script to start the process:
+
+python main.py
+
+The `main.py` script performs the following steps:
+1. Crawls news titles, URLs, and dates using `crawler.py`.
+2. Filters and processes the data using `filter.py`.
+3. Summarizes the content of each article using Amazon Bedrock.
+
