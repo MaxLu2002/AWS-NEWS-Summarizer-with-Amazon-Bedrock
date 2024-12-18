@@ -34,7 +34,6 @@ def open_target_page(driver, target_url):
     right_bottom_x = window_width - 10
     right_bottom_y = window_height - 10
     ActionChains(driver).move_by_offset(right_bottom_x, right_bottom_y).click().perform()
-    print("Click completed")
 
 def scrape_data(driver, target_date):
     """Scrape articles data from the webpage."""
