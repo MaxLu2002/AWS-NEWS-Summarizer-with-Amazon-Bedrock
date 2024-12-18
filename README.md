@@ -49,17 +49,14 @@ Set the `time` and `language` variables in the `config.py` file. The `time` vari
 - If `language` is set to "Traditional Chinese", the output will be in Traditional Chinese.
 
 ### 2. Set Environment Variables
-Configure the environment variable in your terminal to enable AWS Bedrock access. Use the AWS CLI to set your profile:
-   
     ```bash
     $env:AWS_PROFILE="intern"
     ```
 
+
 Replace `YOUR-PROFILE-NAME` with the appropriate AWS profile name.
 
-### 3. Run the Main Script
-Execute the `main.py` script to start the process:
-    
+### 3. Run the Main Script    
     ```bash
     python main.py
     ˋˋˋ
