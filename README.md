@@ -50,11 +50,9 @@ Set the `time` and `language` variables in the `config.py` file. The `time` vari
 
 ### 2. Set Environment Variables
 Configure the environment variable in your terminal to enable AWS Bedrock access. Use the AWS CLI to set your profile:
-    
     '''bash
     $env:AWS_PROFILE="YOUR-PROFILE-NAME"
     '''
-
 Replace `YOUR-PROFILE-NAME` with the appropriate AWS profile name.
 
 ### 3. Run the Main Script
