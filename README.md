@@ -52,14 +52,12 @@ Set the `time` and `language` variables in the `config.py` file. The `time` vari
     ```bash
     $env:AWS_PROFILE="intern"
     ```
-
-
 Replace `YOUR-PROFILE-NAME` with the appropriate AWS profile name.
 
 ### 3. Run the Main Script    
     ```bash
     python main.py
-    ˋˋˋ
+    ```
 
 The `main.py` script performs the following steps:
 1. Crawls news titles, URLs, and dates using `crawler.py`.
