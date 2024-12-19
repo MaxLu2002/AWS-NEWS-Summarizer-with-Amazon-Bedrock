@@ -5,16 +5,6 @@ import time
 import config
 
 
-# 模組：讀取檔案
-def read_file(file_path):
-    """read excel file"""
-    return pd.read_excel(file_path)
-
-# 模組：初始化 Bedrock Runtime 客戶端
-def initialize_bedrock_client(region="us-east-1"):
-    """init Bedrock Runtime"""
-    return boto3.client("bedrock-runtime", region_name=region)
-
 # 模組：生成提示詞
 def generate_question(content,language):
     """Identify your prompt"""
@@ -68,14 +58,11 @@ def prepare_api_parameters(question):
     }
 
 def call_bedrock_api(client, kwargs):
-    """呼叫 Bedrock API 並返回回應。"""
     response = client.invoke_model(**kwargs)
     body = json.loads(response['body'].read())
     return body["content"][0]['text']
 
-def update_dataframe_with_summary(df, client,language):
-    """遍歷 DataFrame 並用摘要更新。"""
-    
+def update_dataframe_with_summary(df, client,language):    
     for index, row in df.iterrows():
         content = row['Content']
         question = generate_question(content,language)
@@ -86,9 +73,7 @@ def update_dataframe_with_summary(df, client,language):
         print("\n", summary)
         time.sleep(1)
 
-def save_to_excel(df, file_path):
-    """將 DataFrame 保存回 Excel 檔案。"""
-    df.to_excel(file_path, index=False)
+    
 
 # 主函式
 def main():
@@ -96,11 +81,12 @@ def main():
     language = config.language
     file_name = f"ENG_content_{target_date}"
     file_path = f"./articles/{file_name}.xlsx"
-
-    df = read_file(file_path)
-    client = initialize_bedrock_client()
-    update_dataframe_with_summary(df, client,language)
-    save_to_excel(df, file_path)
+    df = pd.read_excel(file_path)
+    client = boto3.client("bedrock-runtime", region_name="us-east-1")
+    
+    update_dataframe_with_summary(df, client, language)
+    
+    df.to_excel(file_path, index=False)
 
 if __name__ == "__main__":
     main()

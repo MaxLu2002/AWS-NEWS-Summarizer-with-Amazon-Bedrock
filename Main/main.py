@@ -16,15 +16,15 @@ def main():
     articles_dir = "./articles"
     ensure_directory(articles_dir)
 
-    # 1st step: Crawler
-    print("\n Data Crawlering...")
-    crawler()
-    time.sleep(3)
+    # # 1st step: Crawler
+    # print("\n Data Crawlering...")
+    # crawler()
+    # time.sleep(3)
 
-    # 2nd Step: Filter
-    print("\n Filtering ...")
-    filter()
-    time.sleep(3)
+    # # 2nd Step: Filter
+    # print("\n Filtering ...")
+    # filter()
+    # time.sleep(3)
 
     # 3rd Srep: Summary
     print("\n Summarizing...")
